@@ -112,4 +112,4 @@ if __name__ == "__main__":
 
                             # tripinfo xml 로 output 추출하는 코드
                             #  "--tripinfo-output", "tripinfo.xml"]) 
-    # run()
+    ## run()
