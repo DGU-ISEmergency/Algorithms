@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-05-14 15:24:08 by Eclipse SUMO netedit Version 1.20.0
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <!-- VTypes -->
+    <vType id="typeNS" length="7.00" minGap="3.00" maxSpeed="25.00" guiShape="bus" accel="0.8" decel="4.5" sigma="0.5"/>
+    <vType id="typeWE" length="5.00" minGap="2.50" maxSpeed="16.67" guiShape="passenger" accel="0.8" decel="4.5" sigma="0.5"/>
+</routes>

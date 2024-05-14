@@ -1,0 +1,12 @@
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+  <trip id="0" depart="0" from="origin" to="destination" />
+  <trip id="1" depart="2" from="origin" to="destination" />
+  <trip id="2" depart="3" from="origin" to="destination" />
+  <trip id="3" depart="5" from="origin" to="destination" />
+  <trip id="4" depart="7" from="origin" to="destination" />
+  <trip id="5" depart="8" from="origin" to="destination" />
+  <trip id="6" depart="9" from="origin" to="destination" />
+  <trip id="7" depart="10" from="origin" to="destination" />
+  <trip id="8" depart="11" from="origin" to="destination" />
+  <trip id="9" depart="12" from="origin" to="destination" />
+</routes>
