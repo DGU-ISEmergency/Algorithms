@@ -73,6 +73,7 @@ def is_green_light(edge_id):
 
     return False
 
+# setPhase로 해보기
 def set_green_light(edge_id, duration):
     tr.edge.setParameter(edgeID=edge_id, param="tl", value="G" * duration) # tl: traffic light
     tr.simulation.setParameter(simulation="time-to-teleport", value=duration)
