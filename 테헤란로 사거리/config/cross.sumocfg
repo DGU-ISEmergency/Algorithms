@@ -5,7 +5,6 @@
     <input>
         <net-file value="cross.net.xml"/>
         <route-files value="cross.rou.xml"/>
-        <additional-files value="cross.det.xml"/>
     </input>
 
     <time>

@@ -18,10 +18,8 @@ import traci
 
 #==============================================================================
 
-# 실행 함수
-def generate_routefile():
-    random.seed(41)
-    N = 3600 # 3600 steps
+# cross.sumocfg 실행
+
 
     
 
@@ -87,30 +85,31 @@ def generate_routefile():
 #     sys.stdout.flush()
 
 
-# def get_options():
-#     optParser = optparse.OptionParser()
-#     optParser.add_option("--nogui", action="store_true",
-#                          default=False, help="run the commandline version of sumo")
-#     options, args = optParser.parse_args()
-#     return options
+def get_options():
+    optParser = optparse.OptionParser()
+    optParser.add_option("--nogui", action="store_true",
+                         default=False, help="run the commandline version of sumo")
+    options, args = optParser.parse_args()
+    return options
 
+# this is the main entry point of this script
+if __name__ == "__main__":
+    options = get_options()
 
-# # this is the main entry point of this script
-# if __name__ == "__main__":
-#     options = get_options()
+    # this script has been called from the command line. It will start sumo as a
+    # server, then connect and run
+    if options.nogui:
+        sumoBinary = checkBinary('sumo')
+    else:
+        sumoBinary = checkBinary('sumo-gui')
 
-#     # this script has been called from the command line. It will start sumo as a
-#     # server, then connect and run
-#     if options.nogui:
-#         sumoBinary = checkBinary('sumo')
-#     else:
-#         sumoBinary = checkBinary('sumo-gui')
+    # first, generate the route file for this simulation
+    # generate_routefile()
 
-#     # first, generate the route file for this simulation
-#     generate_routefile()
+    # this is the normal way of using traci. sumo is started as a
+    # subprocess and then the python script connects and runs
+    traci.start([sumoBinary, "-c", "config/cross.sumocfg"])
 
-#     # this is the normal way of using traci. sumo is started as a
-#     # subprocess and then the python script connects and runs
-#     traci.start([sumoBinary, "-c", "config/cross.sumocfg",
-#                              "--tripinfo-output", "tripinfo.xml"])
-#     run()
+                            # tripinfo xml 로 output 추출하는 코드
+                            #  "--tripinfo-output", "tripinfo.xml"]) 
+    # run()
