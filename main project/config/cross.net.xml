@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-05-14 19:38:44 by Eclipse SUMO netedit Version 1.20.0
+<!-- generated on 2024-05-14 22:07:08 by Eclipse SUMO netedit Version 1.20.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\sangjunlee\Desktop\sumo\sumo_prac\main project\config\cross2.net.xml"/>
+        <sumo-net-file value="C:\Users\sangjunlee\Desktop\sumo\sumo_prac\main project\config\cross.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\sangjunlee\Desktop\sumo\sumo_prac\main project\config\cross2.net.xml"/>
+        <output-file value="C:\Users\sangjunlee\Desktop\sumo\sumo_prac\main project\config\cross.net.xml"/>
     </output>
 
     <processing>
@@ -148,11 +148,11 @@
     </edge>
 
     <tlLogic id="c" type="static" programID="0" offset="0">
-        <phase duration="60" state="OrrrrOOGGGGrOrrrOOGGGGr"/>
+        <phase duration="10" state="OrrrrOOGGGGrOrrrOOGGGGr"/>
         <phase duration="4"  state="rrrrrrryyyyrrrrrrryyyyr"/>
-        <phase duration="34" state="rrrrrrrrrrrGrrrrrrrrrrG"/>
+        <phase duration="35" state="rrrrrrrrrrrGrrrrrrrrrrG"/>
         <phase duration="4"  state="rrrrrrrrrrryrrrrrrrrrry"/>
-        <phase duration="70" state="OGGGGOOrrrrrOGGGOOrrrrr"/>
+        <phase duration="68" state="OGGGGOOrrrrrOGGGOOrrrrr"/>
     </tlLogic>
 
     <junction id="1" type="priority" x="0.00" y="500.00" incLanes="c1_0 c1_1 c1_2" intLanes=":1_0_0" shape="0.00,500.00 9.60,500.00 0.00,500.00">
