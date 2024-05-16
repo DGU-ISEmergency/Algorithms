@@ -25,7 +25,6 @@ import traci
 # cross.sumocfg 실행
 
 def generate_routefile():
-    random.seed(41)  # make tests reproducible
     N = 3600  # number of time steps
 
     # 태경이가 준 교통량 넣으면 될듯
@@ -35,7 +34,7 @@ def generate_routefile():
     pSN = 1. / 10
     pLT1 = 1. / 10
     pLT2 = 1. / 10
-    pEme = 1. / 30
+    pEme = 1. / 20
     pRT1 = 1. / 10
     pRT2 = 1. / 10
     pRT3 = 1. / 10
@@ -118,16 +117,13 @@ def generate_routefile():
 def run():
     """execute the TraCI control loop"""
     step = 0
-    edge_id = '4c' # 실제 긴급차량 진입하는 엣지로 변경해야됨
-    veh_id = 'emergency' # 실제 긴급차량 id로 변경해야됨
-    tls_id = 0
-
-    # we start with phase 2 where EW has green
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        lane_id = ed.emergency_detection(edge_id)
-        if lane_id:
-            es.set_emergency_signal(tls_id, 15)
+        if traci.trafficlight.getPhase("c") != 0:
+            # we are not already switching
+            if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
+                # there is a vehicle from the north, switch
+                traci.trafficlight.setPhase("c", 0)
         step += 1
     traci.close()
     sys.stdout.flush()
@@ -159,4 +155,4 @@ if __name__ == "__main__":
 
                             # tripinfo xml 로 output 추출하는 코드
                             #  "--tripinfo-output", "tripinfo.xml"]) 
-    # run()
+    run()
