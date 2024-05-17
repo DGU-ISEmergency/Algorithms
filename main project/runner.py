@@ -40,6 +40,8 @@ def generate_routefile():
     pRT3 = 1. / 10
     pRT4 = 1. / 10
 
+    lanes = ["0", "1", "2", "3", "4"]
+
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
         <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
@@ -60,48 +62,58 @@ def generate_routefile():
         vehNr = 0
         for i in range(N):
             if random.uniform(0, 1) < pWE:
-                print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pEW:
+                lane = random.choice(lanes)
                 if random.uniform(0, 1) < pEme:
-                    print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" />' % (
-                        vehNr, i), file=routes)
+                    print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
+                        vehNr, i, lane), file=routes)
                 else:
-                    print('    <vehicle id="left_%i" type="passenger" route="left" depart="%i" />' % (
-                        vehNr, i), file=routes)
+                    print('    <vehicle id="left_%i" type="passenger" route="left" depart="%i" departLane="%s" />' % (
+                        vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pNS:
-                print('    <vehicle id="down_%i" type="passenger" route="down" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="down" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pSN:
-                print('    <vehicle id="up_%i" type="passenger" route="up" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="up" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pLT1:
-                print('    <vehicle id="leftTurn1_%i" type="passenger" route="leftTurn1" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="leftTurn1_%i" type="passenger" route="leftTurn1" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pLT2:
-                print('    <vehicle id="leftTurn2_%i" type="passenger" route="leftTurn2" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="leftTurn2_%i" type="passenger" route="leftTurn2" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT1:
-                print('    <vehicle id="rightTurn1_%i" type="passenger" route="rightTurn1" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn1_%i" type="passenger" route="rightTurn1" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT2:
-                print('    <vehicle id="rightTurn2_%i" type="passenger" route="rightTurn2" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn2_%i" type="passenger" route="rightTurn2" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT3:
-                print('    <vehicle id="rightTurn3_%i" type="passenger" route="rightTurn3" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn3_%i" type="passenger" route="rightTurn3" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT4:
-                print('    <vehicle id="rightTurn4_%i" type="passenger" route="rightTurn4" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn4_%i" type="passenger" route="rightTurn4" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
         print("</routes>", file=routes)
 
