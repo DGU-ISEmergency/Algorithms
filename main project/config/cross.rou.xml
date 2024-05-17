@@ -1,15 +1,21 @@
 <routes>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <vType id="typeWE" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="16.67" guiShape="passenger"/>
         <vType id="typeNS" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="bus"/>
 =======
         <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
         <vType id="emergency" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="emergency"/>
 >>>>>>> 4a276ed4bdda3c267fb4befeef450e80b133ebeb
+=======
+        <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
+        <vType id="emergency" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="emergency"/>
+>>>>>>> 031569d6c70b0b417c83a6345464d21f33bac3e6
 
         <route id="right" edges="3c c4" />
         <route id="left" edges="4c c3" />
         <route id="down" edges="1c c2" />
+<<<<<<< HEAD
 <<<<<<< HEAD
     <vehicle id="left_0" type="typeWE" route="left" depart="7" />
     <vehicle id="left_1" type="typeWE" route="left" depart="11" />
@@ -811,6 +817,8 @@
     <vehicle id="right_797" type="typeWE" route="right" depart="3584" />
     <vehicle id="right_798" type="typeWE" route="right" depart="3589" />
 =======
+=======
+>>>>>>> 031569d6c70b0b417c83a6345464d21f33bac3e6
         <route id="up" edges="2c c1" />
         <route id="leftTurn1" edges="4c c2" />
         <route id="leftTurn2" edges="3c c1" />
@@ -4427,5 +4435,8 @@
     <vehicle id="left_3606" type="passenger" route="left" depart="3598" />
     <vehicle id="rightTurn3_3607" type="passenger" route="rightTurn3" depart="3598" />
     <vehicle id="rightTurn3_3608" type="passenger" route="rightTurn3" depart="3599" />
+<<<<<<< HEAD
 >>>>>>> 4a276ed4bdda3c267fb4befeef450e80b133ebeb
+=======
+>>>>>>> 031569d6c70b0b417c83a6345464d21f33bac3e6
 </routes>
