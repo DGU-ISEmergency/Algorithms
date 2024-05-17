@@ -1,1 +1,8 @@
-<e1Detector id="0" lane="4c_0" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+    <e1Detector id="0" lane="4c_0" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+    <e1Detector id="1" lane="4c_1" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+    <e1Detector id="2" lane="4c_2" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+    <e1Detector id="3" lane="4c_3" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+    <e1Detector id="4" lane="4c_4" pos="250" file="cross.out" friendlyPos="x" vType="emergency"/>
+</additional>

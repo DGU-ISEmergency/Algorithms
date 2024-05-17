@@ -8,6 +8,5 @@ def green_time(lane_id, veh_id, edge_id):
     t = (tr.lane.getLength(lane_id) - (qc * tr.vehicle.getSpeed(veh_id))) / tr.vehicle.getSpeed(veh_id)
 
     g = qc + t
-    print(g)
 
     return g
