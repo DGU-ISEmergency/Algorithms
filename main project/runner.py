@@ -54,7 +54,8 @@ def generate_routefile():
         <route id="rightTurn1" edges="2c c4" />
         <route id="rightTurn2" edges="4c c1" />
         <route id="rightTurn3" edges="1c c3" />
-        <route id="rightTurn4" edges="3c c2" />""", file=routes)
+        <route id="rightTurn4" edges="3c c2" />
+              """, file=routes)
 
         vehNr = 0
         for i in range(N):
@@ -117,13 +118,29 @@ def generate_routefile():
 def run():
     """execute the TraCI control loop"""
     step = 0
+
+    # 긴급차량 등장 edge, lane 설정
+    edge_id = "4c"
+    lane_id = "4c_0"
+    tls_id = "c" # 교차로 신호 id
+    loop_id = "0" # 디텍터 id
+
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        if traci.trafficlight.getPhase("c") != 0:
-            # we are not already switching
-            if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
-                # there is a vehicle from the north, switch
-                traci.trafficlight.setPhase("c", 0)
+
+        # 디텍터 사용해서 긴급차량 감지
+        if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
+            # 긴급차량 id
+            vehicle_ids = ed.get_detected_vehicle_ids(loop_id)
+
+            for veh_id in vehicle_ids:
+                if "emergency" in veh_id:
+                    # 요구 녹색시간 계산
+                    duration = gt.green_time(lane_id, veh_id, edge_id)
+
+                    # 신호 변경
+                    es.set_emergency_signal(tls_id, duration)
+                    break # 긴급차량 하나만 처리하고 중단
         step += 1
     traci.close()
     sys.stdout.flush()
