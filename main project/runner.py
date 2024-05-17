@@ -25,6 +25,7 @@ import traci
 # cross.sumocfg 실행
 
 def generate_routefile():
+    random.seed(10)
     N = 3600  # number of time steps
 
     # 태경이가 준 교통량 넣으면 될듯
