@@ -135,3 +135,6 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode
+
+## pycache 추가
+__pycache__/
