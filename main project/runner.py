@@ -40,6 +40,8 @@ def generate_routefile():
     pRT2 = 1. / 10
     pRT3 = 1. / 10
     pRT4 = 1. / 10
+    pUT1 = 1. / 10
+    pUT2 = 1. / 10
 
     lanes = ["0", "1", "2", "3", "4"]
 
@@ -58,10 +60,22 @@ def generate_routefile():
         <route id="rightTurn2" edges="4c c1" />
         <route id="rightTurn3" edges="1c c3" />
         <route id="rightTurn4" edges="3c c2" />
+        <route id="uTurn1" edges="1c c1" />
+        <route id="uTurn2" edges="2c c2" />
               """, file=routes)
 
         vehNr = 0
         for i in range(N):
+            if random.uniform(0, 1) < pUT1:
+                lane = random.choice(lanes)
+                print('    <vehicle id="uTurn1_%i" type="passenger" route="uTurn1" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
+                vehNr += 1
+            if random.uniform(0, 1) < pUT2:
+                lane = random.choice(lanes)
+                print('    <vehicle id="uTurn2_%i" type="passenger" route="uTurn2" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
+                vehNr += 1
             if random.uniform(0, 1) < pWE:
                 lane = random.choice(lanes)
                 print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" departLane="%s" />' % (
