@@ -69,6 +69,7 @@ def generate_routefile():
                 vehNr += 1
             if random.uniform(0, 1) < pEW:
                 lane = random.choice(lanes)
+                # 긴급차량 생성
                 if random.uniform(0, 1) < pEme:
                     print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
                         vehNr, i, lane), file=routes)
@@ -127,61 +128,35 @@ def generate_routefile():
 #        <phase duration="6"  state="ryry"/>
 #    </tlLogic>
 
-def signal_change(edge_id, lane_id, loop_id, tls_id = "c"):
-    # 긴급차량 id
-    veh_id = ed.get_detected_vehicle_ids(loop_id)[0]
+def signal_change(edge_id, lane_id, loop_id):
+    tls_id = "c" # 교차로 신호 id
+    veh_id = ed.get_detected_vehicle_ids(loop_id)[0] # 차량 id -> 왜 0번 인덱스인지 다시 설명 필요(이해못함ㅇㅅㅇ;;)
+    # 긴급차량인지 확인
     if "emergency" in veh_id:
         # 요구 녹색시간 계산
         duration = gt.green_time(lane_id, veh_id, edge_id)
         print(f"응급차량 감지, {duration} steps 동안 신호변경")
         # 신호 변경
         es.set_emergency_signal(tls_id, duration)
-        # break # 긴급차량 하나만 처리하고 중단
+        
 # 신호 관련
 def run():
     """execute the TraCI control loop"""
     step = 0
 
-    # 긴급차량 등장 edge, lane 설정
-    tls_id = "c" # 교차로 신호 id
-
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        # 디텍터 사용해서 모든차량 감지
-        if traci.inductionloop.getLastStepVehicleIDs("0"):
-            loop_id = "0"
-            edge_id = "4c"
-            lane_id = "4c_0"
 
-            signal_change(edge_id, lane_id, loop_id)
+        loop = ["0", "1", "2", "3", "4"]
+        edge_id = "4c"
 
-        elif traci.inductionloop.getLastStepVehicleIDs("1"):
-            loop_id = "1"
-            edge_id = "4c"
-            lane_id = "4c_1"
+        # 모든 디텍터 사용해서 긴급차량 감지
+        for loop_id in loop:
+            lane_id = f"{edge_id}_{loop_id}"
+            # 모든 차량 id를 반환하는 거였네..
+            if traci.inductionloop.getLastStepVehicleIDs(loop_id):
+                signal_change(edge_id, lane_id, loop_id)
 
-            signal_change(edge_id, lane_id, loop_id)
-
-        elif traci.inductionloop.getLastStepVehicleIDs("2"):
-            loop_id = "2"
-            edge_id = "4c"
-            lane_id = "4c_2"
-
-            signal_change(edge_id, lane_id, loop_id)
-
-        elif traci.inductionloop.getLastStepVehicleNumber("3"):
-            loop_id = "3"
-            edge_id = "4c"
-            lane_id = "4c_3"
-
-            signal_change(edge_id, lane_id, loop_id)
-
-        elif traci.inductionloop.getLastStepVehicleNumber("4"):
-            loop_id = "4"
-            edge_id = "4c"
-            lane_id = "4c_4"
-
-            signal_change(edge_id, lane_id, loop_id)
         step += 1
     
     traci.close()
