@@ -25,6 +25,7 @@ import traci
 # cross.sumocfg 실행
 
 def generate_routefile():
+    random.seed(10)
     N = 3600  # number of time steps
 
     # 태경이가 준 교통량 넣으면 될듯
@@ -34,11 +35,13 @@ def generate_routefile():
     pSN = 1. / 10
     pLT1 = 1. / 10
     pLT2 = 1. / 10
-    pEme = 1. / 20
+    pEme = 1. / 3
     pRT1 = 1. / 10
     pRT2 = 1. / 10
     pRT3 = 1. / 10
     pRT4 = 1. / 10
+
+    lanes = ["0", "1", "2", "3", "4"]
 
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
@@ -60,48 +63,58 @@ def generate_routefile():
         vehNr = 0
         for i in range(N):
             if random.uniform(0, 1) < pWE:
-                print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pEW:
+                lane = random.choice(lanes)
                 if random.uniform(0, 1) < pEme:
-                    print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" />' % (
-                        vehNr, i), file=routes)
+                    print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
+                        vehNr, i, lane), file=routes)
                 else:
-                    print('    <vehicle id="left_%i" type="passenger" route="left" depart="%i" />' % (
-                        vehNr, i), file=routes)
+                    print('    <vehicle id="left_%i" type="passenger" route="left" depart="%i" departLane="%s" />' % (
+                        vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pNS:
-                print('    <vehicle id="down_%i" type="passenger" route="down" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="down" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pSN:
-                print('    <vehicle id="up_%i" type="passenger" route="up" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="right_%i" type="passenger" route="up" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pLT1:
-                print('    <vehicle id="leftTurn1_%i" type="passenger" route="leftTurn1" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="leftTurn1_%i" type="passenger" route="leftTurn1" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pLT2:
-                print('    <vehicle id="leftTurn2_%i" type="passenger" route="leftTurn2" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="leftTurn2_%i" type="passenger" route="leftTurn2" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT1:
-                print('    <vehicle id="rightTurn1_%i" type="passenger" route="rightTurn1" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn1_%i" type="passenger" route="rightTurn1" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT2:
-                print('    <vehicle id="rightTurn2_%i" type="passenger" route="rightTurn2" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn2_%i" type="passenger" route="rightTurn2" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT3:
-                print('    <vehicle id="rightTurn3_%i" type="passenger" route="rightTurn3" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn3_%i" type="passenger" route="rightTurn3" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
             if random.uniform(0, 1) < pRT4:
-                print('    <vehicle id="rightTurn4_%i" type="passenger" route="rightTurn4" depart="%i" />' % (
-                    vehNr, i), file=routes)
+                lane = random.choice(lanes)
+                print('    <vehicle id="rightTurn4_%i" type="passenger" route="rightTurn4" depart="%i" departLane="%s" />' % (
+                    vehNr, i, lane), file=routes)
                 vehNr += 1
         print("</routes>", file=routes)
 
@@ -114,34 +127,63 @@ def generate_routefile():
 #        <phase duration="6"  state="ryry"/>
 #    </tlLogic>
 
+def signal_change(edge_id, lane_id, loop_id, tls_id = "c"):
+    # 긴급차량 id
+    veh_id = ed.get_detected_vehicle_ids(loop_id)[0]
+    if "emergency" in veh_id:
+        # 요구 녹색시간 계산
+        duration = gt.green_time(lane_id, veh_id, edge_id)
+        print(f"응급차량 감지, {duration} steps 동안 신호변경")
+        # 신호 변경
+        es.set_emergency_signal(tls_id, duration)
+        # break # 긴급차량 하나만 처리하고 중단
 # 신호 관련
 def run():
     """execute the TraCI control loop"""
     step = 0
 
     # 긴급차량 등장 edge, lane 설정
-    edge_id = "4c"
-    lane_id = "4c_0"
     tls_id = "c" # 교차로 신호 id
-    loop_id = "0" # 디텍터 id
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
+        # 디텍터 사용해서 모든차량 감지
+        if traci.inductionloop.getLastStepVehicleIDs("0"):
+            loop_id = "0"
+            edge_id = "4c"
+            lane_id = "4c_0"
 
-        # 디텍터 사용해서 긴급차량 감지
-        if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
-            # 긴급차량 id
-            vehicle_ids = ed.get_detected_vehicle_ids(loop_id)
+            signal_change(edge_id, lane_id, loop_id)
 
-            for veh_id in vehicle_ids:
-                if "emergency" in veh_id:
-                    # 요구 녹색시간 계산
-                    duration = gt.green_time(lane_id, veh_id, edge_id)
+        elif traci.inductionloop.getLastStepVehicleIDs("1"):
+            loop_id = "1"
+            edge_id = "4c"
+            lane_id = "4c_1"
 
-                    # 신호 변경
-                    es.set_emergency_signal(tls_id, duration)
-                    break # 긴급차량 하나만 처리하고 중단
+            signal_change(edge_id, lane_id, loop_id)
+
+        elif traci.inductionloop.getLastStepVehicleIDs("2"):
+            loop_id = "2"
+            edge_id = "4c"
+            lane_id = "4c_2"
+
+            signal_change(edge_id, lane_id, loop_id)
+
+        elif traci.inductionloop.getLastStepVehicleNumber("3"):
+            loop_id = "3"
+            edge_id = "4c"
+            lane_id = "4c_3"
+
+            signal_change(edge_id, lane_id, loop_id)
+
+        elif traci.inductionloop.getLastStepVehicleNumber("4"):
+            loop_id = "4"
+            edge_id = "4c"
+            lane_id = "4c_4"
+
+            signal_change(edge_id, lane_id, loop_id)
         step += 1
+    
     traci.close()
     sys.stdout.flush()
 

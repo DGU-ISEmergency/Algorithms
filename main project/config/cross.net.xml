@@ -151,12 +151,12 @@
     </edge>
 
     <tlLogic id="c" type="static" programID="0" offset="0">
-        <phase duration="60" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
-        <phase duration="4"  state="OrrrryOyyyyrOrrryOyyyyr"/>
-        <phase duration="34" state="OrrrrrOrrrrGOrrrrOrrrrG"/>
+        <phase duration="57" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
+        <phase duration="3"  state="OrrrryOyyyyrOrrryOyyyyr"/>
+        <phase duration="36" state="OrrrrrOrrrrGOrrrrOrrrrG"/>
         <phase duration="4"  state="OrrrrrOrrrryOrrrrOrrrry"/>
-        <phase duration="70" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
-        <phase duration="4"  state="OyyyyrOrrrrrOyyyrOrrrrr"/>
+        <phase duration="57" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
+        <phase duration="3"  state="OyyyyrOrrrrrOyyyrOrrrrr"/>
     </tlLogic>
 
     <junction id="1" type="priority" x="0.00" y="500.00" incLanes="c1_0 c1_1 c1_2" intLanes=":1_0_0" shape="0.00,500.00 9.60,500.00 0.00,500.00">
