@@ -9,6 +9,8 @@ import random
 import emergency_signal as es
 import emergency_detection as ed
 import green_time as gt
+import vehicle_info as vi
+import change_lane as cl
 
 # we need to import python modules from the $SUMO_HOME/tools directory
 if 'SUMO_HOME' in os.environ:
@@ -35,7 +37,7 @@ def generate_routefile():
     pSN = 1. / 10
     pLT1 = 1. / 10
     pLT2 = 1. / 10
-    pEme = 1. / 3
+    pEme = 1. / 5
     pRT1 = 1. / 10
     pRT2 = 1. / 10
     pRT3 = 1. / 10
@@ -46,7 +48,7 @@ def generate_routefile():
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
         <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
-        <vType id="emergency" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="emergency"/>
+        <vType id="emergency" accel="1" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="35" guiShape="emergency"/>
 
         <route id="right" edges="3c c4" />
         <route id="left" edges="4c c3" />
@@ -128,18 +130,12 @@ def generate_routefile():
 #        <phase duration="6"  state="ryry"/>
 #    </tlLogic>
 
-def signal_change(edge_id, lane_id, loop_id):
-    tls_id = "c" # 교차로 신호 id
-    veh_id = ed.get_detected_vehicle_ids(loop_id)[0] # 차량 id -> 왜 0번 인덱스인지 다시 설명 필요(이해못함ㅇㅅㅇ;;)
-    # 긴급차량인지 확인
-    if "emergency" in veh_id:
-        # 요구 녹색시간 계산
-        duration = gt.green_time(lane_id, veh_id, edge_id)
-        print(f"응급차량 감지, {duration} steps 동안 신호변경")
-        # 신호 변경
-        es.set_emergency_signal(tls_id, duration)
-        
-# 신호 관련
+# 회피 관련
+lcmode = 0b011111111011 # 차량 차선 변경 모드
+lctime = 10 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온다는 건가?
+detect_range = 50 # 긴급차량 감지 범위
+
+# main
 def run():
     """execute the TraCI control loop"""
     step = 0
@@ -149,14 +145,20 @@ def run():
 
         loop = ["0", "1", "2", "3", "4"]
         edge_id = "4c"
+        eme_info = None
 
-        # 모든 디텍터 사용해서 긴급차량 감지
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
-            # 모든 차량 id를 반환하는 거였네..
-            if traci.inductionloop.getLastStepVehicleIDs(loop_id):
-                signal_change(edge_id, lane_id, loop_id)
+            if ed.get_detected_vehicle_ids(loop_id):
+                eme_info = es.signal_change(edge_id, lane_id, loop_id)
+                if eme_info:
+                    break  # 긴급차량 감지 시 반복 중단
+        
+        veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
 
+        if eme_info:
+            cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
+    
         step += 1
     
     traci.close()
