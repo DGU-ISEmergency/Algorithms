@@ -5,6 +5,7 @@ import os
 import sys
 import optparse
 import random
+import numpy as np
 
 import emergency_signal as es
 import emergency_detection as ed
@@ -28,20 +29,25 @@ def generate_routefile():
     random.seed(10)
     N = 3600  # number of time steps
 
-    # 태경이가 준 교통량 넣으면 될듯
-    pWE = 1. / 10
-    pEW = 1. / 10
-    pNS = 1. / 10
-    pSN = 1. / 10
-    pLT1 = 1. / 10
-    pLT2 = 1. / 10
-    pEme = 1. / 3
-    pRT1 = 1. / 10
-    pRT2 = 1. / 10
-    pRT3 = 1. / 10
-    pRT4 = 1. / 10
-    pUT1 = 1. / 10
-    pUT2 = 1. / 10
+    # 1분당 교통량 데이터
+    traffic_volume_per_minute = {
+        "WE": 100,
+        "EW": 120,
+        "NS": 80,
+        "SN": 90,
+        "LT1": 40,
+        "LT2": 50,
+        "Eme": 1,
+        "RT1": 30,
+        "RT2": 25,
+        "RT3": 20,
+        "RT4": 15,
+        "UT1": 10,
+        "UT2": 10,
+    }
+
+    # 1초당 교통량 데이터로 변환 (Poisson 분포의 λ)
+    traffic_lambda_per_second = {k: v / 60 for k, v in traffic_volume_per_minute.items()}
 
     lanes = ["0", "1", "2", "3", "4"]
 
@@ -66,71 +72,31 @@ def generate_routefile():
 
         vehNr = 0
         for i in range(N):
-            if random.uniform(0, 1) < pUT1:
-                lane = random.choice(lanes)
-                print('    <vehicle id="uTurn1_%i" type="passenger" route="uTurn1" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pUT2:
-                lane = random.choice(lanes)
-                print('    <vehicle id="uTurn2_%i" type="passenger" route="uTurn2" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pWE:
-                lane = random.choice(lanes)
-                print('    <vehicle id="right_%i" type="passenger" route="right" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pEW:
-                lane = random.choice(lanes)
-                # 긴급차량 생성
-                if random.uniform(0, 1) < pEme:
-                    print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
-                        vehNr, i, lane), file=routes)
-                else:
-                    print('    <vehicle id="left_%i" type="passenger" route="left" depart="%i" departLane="%s" />' % (
-                        vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pNS:
-                lane = random.choice(lanes)
-                print('    <vehicle id="right_%i" type="passenger" route="down" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pSN:
-                lane = random.choice(lanes)
-                print('    <vehicle id="right_%i" type="passenger" route="up" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pLT1:
-                lane = random.choice(lanes)
-                print('    <vehicle id="leftTurn1_%i" type="passenger" route="leftTurn1" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pLT2:
-                lane = random.choice(lanes)
-                print('    <vehicle id="leftTurn2_%i" type="passenger" route="leftTurn2" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pRT1:
-                lane = random.choice(lanes)
-                print('    <vehicle id="rightTurn1_%i" type="passenger" route="rightTurn1" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pRT2:
-                lane = random.choice(lanes)
-                print('    <vehicle id="rightTurn2_%i" type="passenger" route="rightTurn2" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pRT3:
-                lane = random.choice(lanes)
-                print('    <vehicle id="rightTurn3_%i" type="passenger" route="rightTurn3" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
-            if random.uniform(0, 1) < pRT4:
-                lane = random.choice(lanes)
-                print('    <vehicle id="rightTurn4_%i" type="passenger" route="rightTurn4" depart="%i" departLane="%s" />' % (
-                    vehNr, i, lane), file=routes)
-                vehNr += 1
+            for direction, lambda_val in traffic_lambda_per_second.items():
+                num_vehicles = np.random.poisson(lambda_val)
+                for _ in range(num_vehicles):
+                    lane = random.choice(lanes)
+                    if direction in ["WE", "EW", "NS", "SN"]:
+                        route = {"WE": "right", "EW": "left", "NS": "down", "SN": "up"}[direction]
+                        if direction == "EW" and random.uniform(0, 1) < traffic_lambda_per_second["Eme"]:
+                            print('    <vehicle id="emergency_%i" type="emergency" route="%s" depart="%i" departLane="%s" />' % (
+                                vehNr, route, i, lane), file=routes)
+                        else:
+                            print('    <vehicle id="%s_%i" type="passenger" route="%s" depart="%i" departLane="%s" />' % (
+                                route, vehNr, route, i, lane), file=routes)
+                    elif direction.startswith("LT"):
+                        route = "leftTurn" + direction[-1]
+                        print('    <vehicle id="%s_%i" type="passenger" route="%s" depart="%i" departLane="%s" />' % (
+                            route, vehNr, route, i, lane), file=routes)
+                    elif direction.startswith("RT"):
+                        route = "rightTurn" + direction[-1]
+                        print('    <vehicle id="%s_%i" type="passenger" route="%s" depart="%i" departLane="%s" />' % (
+                            route, vehNr, route, i, lane), file=routes)
+                    elif direction.startswith("UT"):
+                        route = "uTurn" + direction[-1]
+                        print('    <vehicle id="%s_%i" type="passenger" route="%s" depart="%i" departLane="%s" />' % (
+                            route, vehNr, route, i, lane), file=routes)
+                    vehNr += 1
         print("</routes>", file=routes)
 
 # The program looks like this
