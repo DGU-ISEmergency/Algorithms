@@ -111,9 +111,9 @@ def generate_routefile():
 #    </tlLogic>
 
 # 회피 관련
-lcmode = 0b011111111011 # 차량 차선 변경 모드
-lctime = 10 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온다는 건가?
-detect_range = 50 # 긴급차량 감지 범위
+lcmode = 0b011001000101 # 차량 차선 변경 모드
+lctime = 3 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온다는 건가?
+detect_range = 80 # 긴급차량 감지 범위
 
 # main
 def run():
@@ -138,6 +138,7 @@ def run():
 
         if eme_info:
             cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
+            cl.change_small_lane(eme_info, lctime)
     
         step += 1
     
