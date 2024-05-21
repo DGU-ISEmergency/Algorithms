@@ -35,22 +35,22 @@ def generate_routefile():
     pEW = 1. / 3
     pNS = 1. / 10
     pSN = 1. / 10
-    pLT1 = 1. / 20
-    pLT2 = 1. / 20
-    pEme = 1. / 15
-    pRT1 = 1. / 30
-    pRT2 = 1. / 30
-    pRT3 = 1. / 30
-    pRT4 = 1. / 30
-    pUT1 = 1. / 30
-    pUT2 = 1. / 30
+    pLT1 = 1. / 10
+    pLT2 = 1. / 10
+    pEme = 1. / 5
+    pRT1 = 1. / 10
+    pRT2 = 1. / 10
+    pRT3 = 1. / 10
+    pRT4 = 1. / 10
+    pUT1 = 1. / 10
+    pUT2 = 1. / 10
 
     lanes = ["0", "1", "2", "3", "4"]
 
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
         <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
-        <vType id="emergency" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="emergency"/>
+        <vType id="emergency" accel="1" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="35" guiShape="emergency"/>
 
         <route id="right" edges="3c c4" />
         <route id="left" edges="4c c3" />
@@ -173,7 +173,7 @@ def run():
         if eme_info:
             cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
             cl.change_small_lane(eme_info, lctime)
-
+    
         step += 1
     
     traci.close()
