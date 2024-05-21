@@ -31,26 +31,26 @@ def generate_routefile():
     N = 3600  # number of time steps
 
     # 태경이가 준 교통량 넣으면 될듯
-    pWE = 1. / 10
-    pEW = 1. / 10
+    pWE = 1. / 3
+    pEW = 1. / 3
     pNS = 1. / 10
     pSN = 1. / 10
-    pLT1 = 1. / 10
-    pLT2 = 1. / 10
-    pEme = 1. / 5
-    pRT1 = 1. / 10
-    pRT2 = 1. / 10
-    pRT3 = 1. / 10
-    pRT4 = 1. / 10
-    pUT1 = 1. / 10
-    pUT2 = 1. / 10
+    pLT1 = 1. / 20
+    pLT2 = 1. / 20
+    pEme = 1. / 15
+    pRT1 = 1. / 30
+    pRT2 = 1. / 30
+    pRT3 = 1. / 30
+    pRT4 = 1. / 30
+    pUT1 = 1. / 30
+    pUT2 = 1. / 30
 
     lanes = ["0", "1", "2", "3", "4"]
 
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
         <vType id="passenger" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2" maxSpeed="16.67" guiShape="passenger"/>
-        <vType id="emergency" accel="1" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="35" guiShape="emergency"/>
+        <vType id="emergency" accel="0.8" decel="4.5" sigma="0.5" length="7" minGap="3" maxSpeed="25" guiShape="emergency"/>
 
         <route id="right" edges="3c c4" />
         <route id="left" edges="4c c3" />
@@ -145,9 +145,9 @@ def generate_routefile():
 #    </tlLogic>
 
 # 회피 관련
-lcmode = 0b011111111011 # 차량 차선 변경 모드
-lctime = 10 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온다는 건가?
-detect_range = 50 # 긴급차량 감지 범위
+lcmode = 0b011001000101 # 차량 차선 변경 모드
+lctime = 3 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온다는 건가?
+detect_range = 80 # 긴급차량 감지 범위
 
 # main
 def run():
@@ -172,7 +172,8 @@ def run():
 
         if eme_info:
             cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
-    
+            cl.change_small_lane(eme_info, lctime)
+
         step += 1
     
     traci.close()
