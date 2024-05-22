@@ -138,3 +138,7 @@ fabric.properties
 
 ## pycache 추가
 __pycache__/
+
+## config/cross.out 과 config/cross.rou.xml 추가
+config/cross.out
+config/cross.rou.xml
