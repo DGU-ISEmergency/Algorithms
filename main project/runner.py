@@ -55,7 +55,7 @@ def generate_routefile():
     with open("config/cross.rou.xml", "w") as routes:
         print("""<routes>
         <vType id="passenger" accel="5" decel="10" sigma="0.5" length="5" minGap="2" departSpeed="16.67" maxSpeed="16.67" guiShape="passenger"/>
-        <vType id="emergency" accel="5" decel="10" sigma="0.5" length="7" minGap="2" departSpeed="16.67" maxSpeed="35" guiShape="emergency"/>
+        <vType id="emergency" vClass="emergency" accel="5" decel="10" sigma="0.5" length="7" minGap="2" departSpeed="16.67" maxSpeed="35" color="red"/>
         <vType id="bus" accel="5" decel="10" sigma="0.5" length="12" minGap="2" departSpeed="12" maxSpeed="12" guiShape="bus" color="0,0,255"/>
         <vType id="truck" accel="5" decel="10" sigma="0.5" length="10" minGap="2" departSpeed="10" maxSpeed="10" guiShape="truck" color="0,255,0"/>
         
@@ -259,8 +259,7 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
-    traci.start([sumoBinary, "-c", "config/cross.sumocfg"])
-
-                            # tripinfo xml 로 output 추출하는 코드
-                            #  "--tripinfo-output", "tripinfo.xml"]) 
+    traci.start([sumoBinary, "-c", "config/cross.sumocfg",])
+                # "--tripinfo-output", "tripinfo.xml",
+                # "--queue-output", "queueinfo.xml",])
     run()
