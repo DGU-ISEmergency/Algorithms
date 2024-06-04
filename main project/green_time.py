@@ -13,7 +13,7 @@ def green_time(lane_id, veh_id, edge_id):
     print(f"차선 수: {tr.edge.getLaneNumber(edge_id)}")
     print(f"차선 길이: {tr.lane.getLength(lane_id)}")
     print(f"qc: {qc}")
-    t = (tr.lane.getLength(lane_id) - (qc * tr.vehicle.getSpeed(veh_id))) / tr.vehicle.getSpeed(veh_id)
+    t = (tr.lane.getLength(lane_id) - (qc * tr.vehicle.getSpeed(veh_id))) / max(tr.vehicle.getSpeed(veh_id), 1)
     g = qc + t
     print(f"g: {g}")
     print("=============================================")
