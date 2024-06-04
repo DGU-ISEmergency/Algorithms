@@ -41,6 +41,6 @@ def signal_change(edge_id, lane_id, loop_id):
         # 신호 변경
         set_emergency_signal(tls_id, duration)
         
-        return eme_info
+        return eme_info, duration
     
-    return None
+    return None, 0
