@@ -210,6 +210,7 @@ detect_range = 80 # 긴급차량 감지 범위
 def run():
     """execute the TraCI control loop"""
     step = 0
+    processed_emergency_vehicles = set() # 처리된 긴급차량 목록
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
@@ -221,7 +222,7 @@ def run():
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
-                eme_info = es.signal_change(edge_id, lane_id, loop_id)
+                eme_info = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
                 if eme_info:
                     break  # 긴급차량 감지 시 반복 중단
         

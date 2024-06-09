@@ -25,10 +25,9 @@ def is_green_light(tls_id):
 def set_duration(tls_id, duration):
     tr.trafficlight.setPhaseDuration(tls_id, duration)
 
-def signal_change(edge_id, lane_id, loop_id):
+def signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles):
     tls_id = "c" # 교차로 신호 id
     veh_id = ed.get_detected_vehicle_ids(loop_id)[0]
-    processed_emergency_vehicles = set()  # 처리된 긴급차량 목록
 
     # 긴급차량인지 확인
     if "emergency" in veh_id:
