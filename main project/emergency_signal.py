@@ -28,9 +28,18 @@ def set_duration(tls_id, duration):
 def signal_change(edge_id, lane_id, loop_id):
     tls_id = "c" # 교차로 신호 id
     veh_id = ed.get_detected_vehicle_ids(loop_id)[0]
+    processed_emergency_vehicles = set()  # 처리된 긴급차량 목록
 
     # 긴급차량인지 확인
     if "emergency" in veh_id:
+        # 이미 처리된 긴급차량인지 확인
+        if veh_id in processed_emergency_vehicles:
+            print(f"이미 처리된 긴급차량: {veh_id}")
+            return None
+        
+        # 처리된 긴급차량 목록에 추가
+        processed_emergency_vehicles.add(veh_id)
+        
         # 긴급차량 감지 됐을 때만 회피 로직 가능 -> 처음부터 가능하도록 변경
         eme_info = vi.get_vehicle_info(veh_id)
 

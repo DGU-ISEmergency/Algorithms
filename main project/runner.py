@@ -29,7 +29,7 @@ import traci
 
 def generate_routefile():
     random.seed(10)
-    N = 3600  # number of time steps
+    N = 350  # number of time steps
 
     # 1분당 교통량 데이터
     traffic_volume_per_hour = {
@@ -76,7 +76,7 @@ def generate_routefile():
         vehNr = 0
         for i in range(N):
             # Generate emergency vehicles every 500 steps
-            if i in [50, 300, 600, 1000]:
+            if i in [50]:
                 lane = random.choice(lanes)
                 print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
                     vehNr, i, lane), file=routes)
