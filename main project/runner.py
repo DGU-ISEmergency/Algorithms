@@ -27,22 +27,22 @@ import traci
 
 # cross.sumocfg 실행
 
-def generate_routefile():
-    random.seed(10)
+def generate_routefile(i):
+    random.seed(i)
     N = 350 # number of time steps
 
     # 1분당 교통량 데이터
     traffic_volume_per_hour = {
         "WE": 5212,
         "EW": 6207,
-        "NS": 870,
+        "NS": 1309,
         "SN": 2974,
-        "LT1": 1114,
-        "LT2": 2596,
-        "RT1": 30,
-        "RT2": 25,
-        "RT3": 20,
-        "RT4": 15,
+        "LT1": 222,
+        "LT2": 518,
+        "RT1": 100,
+        "RT2": 312,
+        "RT3": 100,
+        "RT4": 77,
         "UT1": 10,
         "UT2": 10,
     }
@@ -81,125 +81,116 @@ def generate_routefile():
                 print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
                     vehNr, i, lane), file=routes)
                 vehNr += 1
-            if i % 100 <= 50: 
-                for direction, lambda_val in traffic_lambda_per_second.items():
-                    num_vehicles = np.random.poisson(lambda_val)
-                    for _ in range(num_vehicles):
-                        lane = random.choice(lanes)
-                        vehicle_type_random = random.uniform(0, 1)
+        
+            for direction, lambda_val in traffic_lambda_per_second.items():
+                num_vehicles = np.random.poisson(lambda_val)
+                for _ in range(num_vehicles):
+                    lane = random.choice(lanes)
+                    vehicle_type_random = random.uniform(0, 1)
 
-                        # Assigning vehicle type based on arbitrary ratios for each route
-                        if direction == "WE":
-                            if vehicle_type_random < 77/5212:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (77/5212 + 4777/5212):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "right"
-                        elif direction == "EW":
-                            if vehicle_type_random < 22/6207:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (22/6207 + 5891/6207):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "left"
-                        elif direction == "NS":
-                            if vehicle_type_random < 13/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (13/870 + 854/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "down"
-                        elif direction == "SN":
-                            if vehicle_type_random < 10/2974:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (10/2974 + 2913/2974):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "up"
-                        elif direction == "LT1":
-                            if vehicle_type_random < 0/1114:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (0/1114 + 1018/1114):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "leftTurn1"
-                        elif direction == "LT2":
-                            if vehicle_type_random < 0/2596:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (0/2596 + 2500/2596):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "leftTurn2"
-                        elif direction == "RT1":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "rightTurn1"
-                        elif direction == "RT2":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "rightTurn2"
-                        elif direction == "RT3":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "rightTurn3"
-                        elif direction == "RT4":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "rightTurn4"
-                        elif direction == "UT1":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "uTurn1"
-                        elif direction == "UT2":
-                            if vehicle_type_random < 5/870:
-                                type_choice = "bus"
-                            elif vehicle_type_random < (5/870 + 860/870):
-                                type_choice = "passenger"
-                            else:
-                                type_choice = "truck"
-                            route = "uTurn2"
+                    # Assigning vehicle type based on arbitrary ratios for each route
+                    if direction == "WE":
+                        if vehicle_type_random < 77/5212:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (77/5212 + 4777/5212):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "right"
+                    elif direction == "EW":
+                        if vehicle_type_random < 22/6207:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (22/6207 + 5891/6207):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "left"
+                    elif direction == "NS":
+                        if vehicle_type_random < 13/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (13/1309 + 854/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "down"
+                    elif direction == "SN":
+                        if vehicle_type_random < 10/2974:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (10/2974 + 2913/2974):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "up"
+                    elif direction == "LT1":
+                        if vehicle_type_random < 0/1114:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (0/1114 + 1018/1114):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "leftTurn1"
+                    elif direction == "LT2":
+                        if vehicle_type_random < 0/2596:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (0/2596 + 2500/2596):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "leftTurn2"
+                    elif direction == "RT1":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "rightTurn1"
+                    elif direction == "RT2":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "rightTurn2"
+                    elif direction == "RT3":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "rightTurn3"
+                    elif direction == "RT4":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "rightTurn4"
+                    elif direction == "UT1":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "uTurn1"
+                    elif direction == "UT2":
+                        if vehicle_type_random < 5/1309:
+                            type_choice = "bus"
+                        elif vehicle_type_random < (5/1309 + 860/1309):
+                            type_choice = "passenger"
+                        else:
+                            type_choice = "truck"
+                        route = "uTurn2"
 
-                        # Output vehicle definition
-                        print('    <vehicle id="%s_%i" type="%s" route="%s" depart="%i" departLane="%s" />' % (
-                            route, vehNr, type_choice, route, i, lane), file=routes)
-                        vehNr += 1
+                    # Output vehicle definition
+                    print('    <vehicle id="%s_%i" type="%s" route="%s" depart="%i" departLane="%s" />' % (
+                        route, vehNr, type_choice, route, i, lane), file=routes)
+                    vehNr += 1
         print("</routes>", file=routes)
-
-# The program looks like this
-#    <tlLogic id="0" type="static" programID="0" offset="0">
-# the locations of the tls are      NESW
-#        <phase duration="31" state="GrGr"/>
-#        <phase duration="6"  state="yryr"/>
-#        <phase duration="31" state="rGrG"/>
-#        <phase duration="6"  state="ryry"/>
-#    </tlLogic>
 
 # 회피 관련
 lcmode = 0b011001000101 # 차량 차선 변경 모드
@@ -207,7 +198,7 @@ lctime = 3 # 차선 변경 지속 시간 -> 차선 변경하고 다시 돌아온
 detect_range = 80 # 긴급차량 감지 범위
 
 # main
-def run():
+def run_new():
     """execute the TraCI control loop"""
     step = 0
     temp_step = 99999
@@ -217,9 +208,6 @@ def run():
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
 
-        print(f"초기 Program: {traci.trafficlight.getProgram("c")}")
-        print(f"step: {step}")
-
         loop = ["0", "1", "2", "3", "4"]
         edge_id = "4c"
         eme_info = None
@@ -227,7 +215,6 @@ def run():
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
                 eme_info, duration = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
-                print(f"temp_step: {temp_step}")
                 
                 if eme_info:
                     temp_step = step + duration
@@ -242,11 +229,43 @@ def run():
         if temp_step < step:
             traci.trafficlight.setProgram("c", 1)
         
-        print(f"변경 후 Program: {traci.trafficlight.getProgram("c")}")
 
         step += 1
         
 
+    
+    traci.close()
+    sys.stdout.flush()
+    data_rangling()
+
+def run_old():
+    """execute the TraCI control loop"""
+    step = 0
+    temp_step = 99999
+    traci.trafficlight.setProgram("c", 0)
+    processed_emergency_vehicles = set() # 처리된 긴급차량
+
+    while traci.simulation.getMinExpectedNumber() > 0:
+        traci.simulationStep()
+
+        loop = ["0", "1", "2", "3", "4"]
+        edge_id = "4c"
+        eme_info = None
+
+        for loop_id in loop:
+            lane_id = f"{edge_id}_{loop_id}"
+            if ed.get_detected_vehicle_ids(loop_id):
+                eme_info, duration = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
+                if eme_info:
+                    break  # 긴급차량 감지 시 반복 중단
+        
+        veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
+
+        if eme_info:
+            cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
+            cl.change_small_lane(eme_info, lctime)
+    
+        step += 1
     
     traci.close()
     sys.stdout.flush()
@@ -263,9 +282,8 @@ def make_csv():
     import pandas as pd
 
     # my_data.csv 파일 생성
-    my_data = pd.DataFrame(columns=['time', 'lane_id', 'queueing_length'])
+    my_data = pd.DataFrame(columns=['step', 'lane_id', 'queueing_length', 'queueing_time'])
     my_data.to_csv('my_data.csv', index=False)
-    print("my_data.csv 파일 생성 완료")
 
 def data_rangling():
     import xml.etree.ElementTree as ET
@@ -273,29 +291,25 @@ def data_rangling():
 
     # my_data.csv 파일 불러오기
     my_data = pd.read_csv('my_data.csv')
-    print(my_data)
-    print("my_data.csv 파일 불러오기 완료")
 
     tree = ET.parse('queueinfo.xml')
-    print("queueinfo.xml 파일 불러오기 완료")
-    print(tree)
     root = tree.getroot()
 
     # Extract data from XML
     data = []
     for timestep in root.findall('data'):
-        time = float(timestep.get('timestep'))
+        step = float(timestep.get('timestep'))
         for lane in timestep.find('lanes').findall('lane'):
             lane_id = lane.get('id')
             queueing_length = float(lane.get('queueing_length'))
-            data.append((time, lane_id, queueing_length))
+            queueing_time = float(lane.get('queueing_time'))
+            data.append((step, lane_id, queueing_length, queueing_time))
 
-    df = pd.DataFrame(data, columns=['time', 'lane_id', 'queueing_length'])
+    df = pd.DataFrame(data, columns=['step', 'lane_id', 'queueing_length', 'queueing_time'])
     df = df[~df['lane_id'].str.startswith('c')]
     # lane_id 가 1c_0, 1c_1, 1c_2, 1c_3, 1c_4 인 행을 1c 로 통일. 이때, 같은 time의 queueing_length 는 해당 time의 각 lane_id 의 queueing_length 의 평균으로 대체
     df['lane_id'] = df['lane_id'].apply(lambda x: x.split('_')[0])
-    df = df.groupby(['time', 'lane_id']).mean().reset_index()
-    print(df)
+    df = df.groupby(['step', 'lane_id']).mean().reset_index()
     # df를 my_data와 merge
     my_data = pd.concat([my_data, df])
 
@@ -308,24 +322,44 @@ def data_rangling():
 if __name__ == "__main__":
     options = get_options()
     make_csv()
-    # 시뮬레이션 100회 반복
-    for i in range(100):
-        # this script has been called from the command line. It will start sumo as a
-        # server, then connect and run
-        if options.nogui:
+    # 전이신호 사용여부 (True: 사용, False: 미사용)
+    sig_change = True
+
+    if sig_change == True:
+        # 시뮬레이션 100회 반복
+        for i in range(10):
+            # this script has been called from the command line. It will start sumo as a
+            # server, then connect and run
+            # if options.nogui:
             sumoBinary = checkBinary('sumo')
-        else:
-            sumoBinary = checkBinary('sumo-gui')
+            # else:
+            # sumoBinary = checkBinary('sumo-gui')
 
-        # first, generate the route file for this simulation
-        generate_routefile()
+            # first, generate the route file for this simulation
+            generate_routefile(i)
 
-        # this is the normal way of using traci. sumo is started as a
-        # subprocess and then the python script connects and runs
-        # 파일 덮어쓰기로 되어있음
-        traci.start([sumoBinary, "-c", "config/cross.sumocfg",
-                    "--tripinfo-output", "tripinfo.xml",
-                    "--queue-output", "queueinfo.xml",])
-                    # "--tripinfo-output", f"tripinfo_{i}.xml",
-                    # "--queue-output", f"queueinfo_{i}.xml",])
-        run()
+            # this is the normal way of using traci. sumo is started as a
+            # subprocess and then the python script connects and runs
+            # 파일 덮어쓰기로 되어있음
+            traci.start([sumoBinary, "-c", "config/cross.sumocfg",
+                        "--tripinfo-output", "tripinfo.xml",
+                        "--queue-output", "queueinfo.xml",])
+                        # "--tripinfo-output", f"tripinfo_{i}.xml",
+                        # "--queue-output", f"queueinfo_{i}.xml",])
+            run_new()
+    
+    else:
+        # 시뮬레이션 100회 반복
+        for i in range(10):
+            # if options.nogui:
+            sumoBinary = checkBinary('sumo')
+            # else:
+            # sumoBinary = checkBinary('sumo-gui')
+            generate_routefile(i)
+            # 파일 덮어쓰기로 되어있음
+            traci.start([sumoBinary, "-c", "config/cross.sumocfg",
+                        "--tripinfo-output", "tripinfo.xml",
+                        "--queue-output", "queueinfo.xml",])
+                        # "--tripinfo-output", f"tripinfo_{i}.xml",
+                        # "--queue-output", f"queueinfo_{i}.xml",])
+            run_old()
