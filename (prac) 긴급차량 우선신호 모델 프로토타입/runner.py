@@ -102,7 +102,7 @@ def run():
 def get_options():
     optParser = optparse.OptionParser()
     optParser.add_option("--nogui", action="store_true",
-                         default=False, help="run the commandline version of sumo")
+                         default=True, help="run the commandline version of sumo")
     options, args = optParser.parse_args()
     return options
 
