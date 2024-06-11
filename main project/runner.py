@@ -293,7 +293,7 @@ def data_rangling():
 # this is the main entry point of this script
 if __name__ == "__main__":
     options = get_options()
-
+    make_csv()
     # 시뮬레이션 100회 반복
     for i in range(100):
         # this script has been called from the command line. It will start sumo as a
