@@ -252,27 +252,32 @@ def run():
 def get_options():
     optParser = optparse.OptionParser()
     optParser.add_option("--nogui", action="store_true",
-                         default=False, help="run the commandline version of sumo")
+                         default=True, help="run the commandline version of sumo")
     options, args = optParser.parse_args()
     return options
 
 # this is the main entry point of this script
 if __name__ == "__main__":
-    # options = get_options()
+    options = get_options()
 
-    # this script has been called from the command line. It will start sumo as a
-    # server, then connect and run
-    # if options.nogui:
-    #     sumoBinary = checkBinary('sumo')
-    # else:
-    sumoBinary = checkBinary('sumo-gui')
+    # 시뮬레이션 100회 반복
+    for i in range(100):
+        # this script has been called from the command line. It will start sumo as a
+        # server, then connect and run
+        if options.nogui:
+            sumoBinary = checkBinary('sumo')
+        else:
+            sumoBinary = checkBinary('sumo-gui')
 
-    # first, generate the route file for this simulation
-    generate_routefile()
+        # first, generate the route file for this simulation
+        generate_routefile()
 
-    # this is the normal way of using traci. sumo is started as a
-    # subprocess and then the python script connects and runs
-    traci.start([sumoBinary, "-c", "config/cross.sumocfg",#])
-                "--tripinfo-output", "tripinfo.xml",
-                "--queue-output", "queueinfo.xml",])
-    run()
+        # this is the normal way of using traci. sumo is started as a
+        # subprocess and then the python script connects and runs
+        # 파일 덮어쓰기로 되어있음
+        traci.start([sumoBinary, "-c", "config/cross.sumocfg",
+                    "--tripinfo-output", "tripinfo.xml",
+                    "--queue-output", "queueinfo.xml",])
+                    # "--tripinfo-output", f"tripinfo_{i}.xml",
+                    # "--queue-output", f"queueinfo_{i}.xml",])
+        run()
