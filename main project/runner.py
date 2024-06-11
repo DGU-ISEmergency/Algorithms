@@ -212,6 +212,7 @@ def run():
     step = 0
     temp_step = 99999
     traci.trafficlight.setProgram("c", 0)
+    processed_emergency_vehicles = set() # 처리된 긴급차량
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
@@ -225,7 +226,7 @@ def run():
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
-                eme_info, duration = es.signal_change(edge_id, lane_id, loop_id)
+                eme_info, duration = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
                 print(f"temp_step: {temp_step}")
                 
                 if eme_info:
