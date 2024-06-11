@@ -81,115 +81,115 @@ def generate_routefile():
                 print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
                     vehNr, i, lane), file=routes)
                 vehNr += 1
+            if i % 100 <= 50: 
+                for direction, lambda_val in traffic_lambda_per_second.items():
+                    num_vehicles = np.random.poisson(lambda_val)
+                    for _ in range(num_vehicles):
+                        lane = random.choice(lanes)
+                        vehicle_type_random = random.uniform(0, 1)
 
-            for direction, lambda_val in traffic_lambda_per_second.items():
-                num_vehicles = np.random.poisson(lambda_val)
-                for _ in range(num_vehicles):
-                    lane = random.choice(lanes)
-                    vehicle_type_random = random.uniform(0, 1)
+                        # Assigning vehicle type based on arbitrary ratios for each route
+                        if direction == "WE":
+                            if vehicle_type_random < 77/5212:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (77/5212 + 4777/5212):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "right"
+                        elif direction == "EW":
+                            if vehicle_type_random < 22/6207:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (22/6207 + 5891/6207):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "left"
+                        elif direction == "NS":
+                            if vehicle_type_random < 13/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (13/870 + 854/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "down"
+                        elif direction == "SN":
+                            if vehicle_type_random < 10/2974:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (10/2974 + 2913/2974):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "up"
+                        elif direction == "LT1":
+                            if vehicle_type_random < 0/1114:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (0/1114 + 1018/1114):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "leftTurn1"
+                        elif direction == "LT2":
+                            if vehicle_type_random < 0/2596:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (0/2596 + 2500/2596):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "leftTurn2"
+                        elif direction == "RT1":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "rightTurn1"
+                        elif direction == "RT2":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "rightTurn2"
+                        elif direction == "RT3":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "rightTurn3"
+                        elif direction == "RT4":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "rightTurn4"
+                        elif direction == "UT1":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "uTurn1"
+                        elif direction == "UT2":
+                            if vehicle_type_random < 5/870:
+                                type_choice = "bus"
+                            elif vehicle_type_random < (5/870 + 860/870):
+                                type_choice = "passenger"
+                            else:
+                                type_choice = "truck"
+                            route = "uTurn2"
 
-                    # Assigning vehicle type based on arbitrary ratios for each route
-                    if direction == "WE":
-                        if vehicle_type_random < 77/5212:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (77/5212 + 4777/5212):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "right"
-                    elif direction == "EW":
-                        if vehicle_type_random < 22/6207:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (22/6207 + 5891/6207):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "left"
-                    elif direction == "NS":
-                        if vehicle_type_random < 13/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (13/870 + 854/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "down"
-                    elif direction == "SN":
-                        if vehicle_type_random < 10/2974:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (10/2974 + 2913/2974):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "up"
-                    elif direction == "LT1":
-                        if vehicle_type_random < 0/1114:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (0/1114 + 1018/1114):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "leftTurn1"
-                    elif direction == "LT2":
-                        if vehicle_type_random < 0/2596:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (0/2596 + 2500/2596):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "leftTurn2"
-                    elif direction == "RT1":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "rightTurn1"
-                    elif direction == "RT2":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "rightTurn2"
-                    elif direction == "RT3":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "rightTurn3"
-                    elif direction == "RT4":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "rightTurn4"
-                    elif direction == "UT1":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "uTurn1"
-                    elif direction == "UT2":
-                        if vehicle_type_random < 5/870:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/870 + 860/870):
-                            type_choice = "passenger"
-                        else:
-                            type_choice = "truck"
-                        route = "uTurn2"
-
-                    # Output vehicle definition
-                    print('    <vehicle id="%s_%i" type="%s" route="%s" depart="%i" departLane="%s" />' % (
-                        route, vehNr, type_choice, route, i, lane), file=routes)
-                    vehNr += 1
+                        # Output vehicle definition
+                        print('    <vehicle id="%s_%i" type="%s" route="%s" depart="%i" departLane="%s" />' % (
+                            route, vehNr, type_choice, route, i, lane), file=routes)
+                        vehNr += 1
         print("</routes>", file=routes)
 
 # The program looks like this
@@ -236,7 +236,7 @@ def run():
         veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
 
         if eme_info:
-            cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
+            cl.change(veh_list, eme_info, lcmode, lctime, detect_range) 
             cl.change_small_lane(eme_info, lctime)
     
         if temp_step < step:
@@ -245,9 +245,12 @@ def run():
         print(f"변경 후 Program: {traci.trafficlight.getProgram("c")}")
 
         step += 1
+        
+
     
     traci.close()
     sys.stdout.flush()
+    data_rangling()
 
 def get_options():
     optParser = optparse.OptionParser()
@@ -256,10 +259,55 @@ def get_options():
     options, args = optParser.parse_args()
     return options
 
+def make_csv():
+    import pandas as pd
+
+    # my_data.csv 파일 생성
+    my_data = pd.DataFrame(columns=['time', 'lane_id', 'queueing_length'])
+    my_data.to_csv('my_data.csv', index=False)
+    print("my_data.csv 파일 생성 완료")
+
+def data_rangling():
+    import xml.etree.ElementTree as ET
+    import pandas as pd
+
+    # my_data.csv 파일 불러오기
+    my_data = pd.read_csv('my_data.csv')
+    print(my_data)
+    print("my_data.csv 파일 불러오기 완료")
+
+    tree = ET.parse('queueinfo.xml')
+    print("queueinfo.xml 파일 불러오기 완료")
+    print(tree)
+    root = tree.getroot()
+
+    # Extract data from XML
+    data = []
+    for timestep in root.findall('data'):
+        time = float(timestep.get('timestep'))
+        for lane in timestep.find('lanes').findall('lane'):
+            lane_id = lane.get('id')
+            queueing_length = float(lane.get('queueing_length'))
+            data.append((time, lane_id, queueing_length))
+
+    df = pd.DataFrame(data, columns=['time', 'lane_id', 'queueing_length'])
+    df = df[~df['lane_id'].str.startswith('c')]
+    # lane_id 가 1c_0, 1c_1, 1c_2, 1c_3, 1c_4 인 행을 1c 로 통일. 이때, 같은 time의 queueing_length 는 해당 time의 각 lane_id 의 queueing_length 의 평균으로 대체
+    df['lane_id'] = df['lane_id'].apply(lambda x: x.split('_')[0])
+    df = df.groupby(['time', 'lane_id']).mean().reset_index()
+    print(df)
+    # df를 my_data와 merge
+    my_data = pd.concat([my_data, df])
+
+    # my_data.csv 파일로 저장
+    my_data.to_csv('my_data.csv', index=False)
+
+
+
 # this is the main entry point of this script
 if __name__ == "__main__":
     options = get_options()
-
+    make_csv()
     # 시뮬레이션 100회 반복
     for i in range(100):
         # this script has been called from the command line. It will start sumo as a

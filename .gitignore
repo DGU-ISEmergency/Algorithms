@@ -140,5 +140,8 @@ fabric.properties
 __pycache__/
 
 ## config/cross.out 과 config/cross.rou.xml 추가
-.config/cross.out
-.config/cross.rou.xml
+main\ project/config/cross.out
+main\ project/config/cross.rou.xml
+main\ project/tripinfo.xml
+main\ project/queueinfo.xml
+main\ project/my_data.csv
