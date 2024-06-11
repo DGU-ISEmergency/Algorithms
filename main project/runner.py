@@ -122,65 +122,61 @@ def generate_routefile(i):
                             type_choice = "truck"
                         route = "up"
                     elif direction == "LT1":
-                        if vehicle_type_random < 0/1114:
+                        if vehicle_type_random < 0/222:
                             type_choice = "bus"
-                        elif vehicle_type_random < (0/1114 + 1018/1114):
+                        elif vehicle_type_random < (0/222 + 202/222):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "leftTurn1"
                     elif direction == "LT2":
-                        if vehicle_type_random < 0/2596:
+                        if vehicle_type_random < 0/518:
                             type_choice = "bus"
-                        elif vehicle_type_random < (0/2596 + 2500/2596):
+                        elif vehicle_type_random < (0/518 + 500/518):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "leftTurn2"
                     elif direction == "RT1":
-                        if vehicle_type_random < 5/1309:
+                        if vehicle_type_random < 5/100:
                             type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        elif vehicle_type_random < (5/100 + 86/100):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "rightTurn1"
                     elif direction == "RT2":
-                        if vehicle_type_random < 5/1309:
+                        if vehicle_type_random < 15/312:
                             type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        elif vehicle_type_random < (15/312 + 270/312):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "rightTurn2"
                     elif direction == "RT3":
-                        if vehicle_type_random < 5/1309:
+                        if vehicle_type_random < 5/100:
                             type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        elif vehicle_type_random < (5/100 + 86/100):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "rightTurn3"
                     elif direction == "RT4":
-                        if vehicle_type_random < 5/1309:
+                        if vehicle_type_random < 5/77:
                             type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        elif vehicle_type_random < (5/77 + 70/77):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "rightTurn4"
                     elif direction == "UT1":
-                        if vehicle_type_random < 5/1309:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        if vehicle_type_random < (7/10):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
                         route = "uTurn1"
                     elif direction == "UT2":
-                        if vehicle_type_random < 5/1309:
-                            type_choice = "bus"
-                        elif vehicle_type_random < (5/1309 + 860/1309):
+                        if vehicle_type_random < (7/10):
                             type_choice = "passenger"
                         else:
                             type_choice = "truck"
