@@ -14,19 +14,15 @@ def change(veh_list, eme_info, lcmode, lctime, detect_range):
             
             if lcsl:
                 tr.vehicle.changeLaneRelative(veh_id, 1, lctime)
-                print(f"vid:{veh_id}, change left")
             elif lcsr:
                 tr.vehicle.changeLaneRelative(veh_id, -1, lctime)
-                print(f"vid:{veh_id}, change right")
         
         # 긴급 차량과의 거리 확인
         elif (0 < res[5] - eme_info[5] < detect_range) and res[3] > 3:
             if res[4] - eme_info[4] > 0:  # 왼쪽 차선으로 변경
                 tr.vehicle.changeLaneRelative(veh_id, 1, lctime)
-                print(f"vid:{veh_id}, change left")
             elif res[4] - eme_info[4] < 0:  # 오른쪽 차선으로 변경
                 tr.vehicle.changeLaneRelative(veh_id, -1, lctime)
-                print(f"vid:{veh_id}, change right")
 
 def get_small_lane(lane_ids):
     min_queue_length = float('inf')
@@ -49,7 +45,6 @@ def change_small_lane(eme_info, lctime):
     if best_lane_id != eme_info[4]:
         best_lane_index = lane_ids.index(best_lane_id)
         tr.vehicle.changeLane(eme_info[0], best_lane_index, lctime)
-        print(f"vid:{eme_info[0]}, change lane")
         
     elif best_lane_id == None:
         pass

@@ -33,7 +33,6 @@ def signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles):
     if "emergency" in veh_id:
         # 이미 처리된 긴급차량인지 확인
         if veh_id in processed_emergency_vehicles:
-            print(f"이미 처리된 긴급차량: {veh_id}")
             return None, 0
 
         # 처리된 긴급차량으로 추가
@@ -44,7 +43,6 @@ def signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles):
 
         # 요구 녹색시간 계산
         duration = gt.green_time(lane_id, veh_id, edge_id)
-        print(f"응급차량 감지, {duration} steps 동안 신호변경")
         
         # 신호 변경
         set_emergency_signal(tls_id, duration)
