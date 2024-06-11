@@ -29,7 +29,7 @@ import traci
 
 def generate_routefile():
     random.seed(10)
-    N = 3600  # number of time steps
+    N = 50  # number of time steps
 
     # 1분당 교통량 데이터
     traffic_volume_per_hour = {
@@ -230,11 +230,12 @@ def run():
         if eme_info:
             cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
             cl.change_small_lane(eme_info, lctime)
-    
+
         step += 1
-    
+
     traci.close()
     sys.stdout.flush()
+    data_rangling()
 
 def get_options():
     optParser = optparse.OptionParser()
@@ -243,6 +244,51 @@ def get_options():
     options, args = optParser.parse_args()
     return options
 
+def make_csv():
+    import pandas as pd
+
+    # my_data.csv 파일 생성
+    my_data = pd.DataFrame(columns=['time', 'lane_id', 'queueing_length'])
+    my_data.to_csv('my_data.csv', index=False)
+    print("my_data.csv 파일 생성 완료")
+
+def data_rangling():
+    import xml.etree.ElementTree as ET
+    import pandas as pd
+
+    # my_data.csv 파일 불러오기
+    my_data = pd.read_csv('my_data.csv')
+    print(my_data)
+    print("my_data.csv 파일 불러오기 완료")
+
+    tree = ET.parse('queueinfo.xml')
+    print("queueinfo.xml 파일 불러오기 완료")
+    print(tree)
+    root = tree.getroot()
+
+    # Extract data from XML
+    data = []
+    for timestep in root.findall('data'):
+        time = float(timestep.get('timestep'))
+        for lane in timestep.find('lanes').findall('lane'):
+            lane_id = lane.get('id')
+            queueing_length = float(lane.get('queueing_length'))
+            data.append((time, lane_id, queueing_length))
+
+    df = pd.DataFrame(data, columns=['time', 'lane_id', 'queueing_length'])
+    df = df[~df['lane_id'].str.startswith('c')]
+    # lane_id 가 1c_0, 1c_1, 1c_2, 1c_3, 1c_4 인 행을 1c 로 통일. 이때, 같은 time의 queueing_length 는 해당 time의 각 lane_id 의 queueing_length 의 평균으로 대체
+    df['lane_id'] = df['lane_id'].apply(lambda x: x.split('_')[0])
+    df = df.groupby(['time', 'lane_id']).mean().reset_index()
+    print(df)
+    # df를 my_data와 merge
+    my_data = pd.concat([my_data, df])
+
+    # my_data.csv 파일로 저장
+    my_data.to_csv('my_data.csv', index=False)
+
+
+
 # this is the main entry point of this script
 if __name__ == "__main__":
     # options = get_options()
@@ -250,9 +296,9 @@ if __name__ == "__main__":
     # this script has been called from the command line. It will start sumo as a
     # server, then connect and run
     # if options.nogui:
-    #     sumoBinary = checkBinary('sumo')
+    sumoBinary = checkBinary('sumo')
     # else:
-    sumoBinary = checkBinary('sumo-gui')
+        # sumoBinary = checkBinary('sumo-gui')
 
     # first, generate the route file for this simulation
     generate_routefile()
@@ -262,4 +308,5 @@ if __name__ == "__main__":
     traci.start([sumoBinary, "-c", "config/cross.sumocfg",#])
                 "--tripinfo-output", "tripinfo.xml",
                 "--queue-output", "queueinfo.xml",])
+    make_csv()
     run()
