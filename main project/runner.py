@@ -29,7 +29,7 @@ import traci
 
 def generate_routefile():
     random.seed(10)
-    N = 3600  # number of time steps
+    N = 350  # number of time steps
 
     # 1분당 교통량 데이터
     traffic_volume_per_hour = {
@@ -76,7 +76,7 @@ def generate_routefile():
         vehNr = 0
         for i in range(N):
             # Generate emergency vehicles every 500 steps
-            if i in [50, 300, 600, 1000]:
+            if i in [50]:
                 lane = random.choice(lanes)
                 print('    <vehicle id="emergency_%i" type="emergency" route="left" depart="%i" departLane="%s" />' % (
                     vehNr, i, lane), file=routes)
@@ -210,6 +210,7 @@ detect_range = 80 # 긴급차량 감지 범위
 def run():
     """execute the TraCI control loop"""
     step = 0
+    processed_emergency_vehicles = set() # 처리된 긴급차량 목록
 
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
@@ -221,7 +222,7 @@ def run():
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
-                eme_info = es.signal_change(edge_id, lane_id, loop_id)
+                eme_info = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
                 if eme_info:
                     break  # 긴급차량 감지 시 반복 중단
         
@@ -239,27 +240,32 @@ def run():
 def get_options():
     optParser = optparse.OptionParser()
     optParser.add_option("--nogui", action="store_true",
-                         default=False, help="run the commandline version of sumo")
+                         default=True, help="run the commandline version of sumo")
     options, args = optParser.parse_args()
     return options
 
 # this is the main entry point of this script
 if __name__ == "__main__":
-    # options = get_options()
+    options = get_options()
 
-    # this script has been called from the command line. It will start sumo as a
-    # server, then connect and run
-    # if options.nogui:
-    #     sumoBinary = checkBinary('sumo')
-    # else:
-    sumoBinary = checkBinary('sumo-gui')
+    # 시뮬레이션 100회 반복
+    for i in range(100):
+        # this script has been called from the command line. It will start sumo as a
+        # server, then connect and run
+        if options.nogui:
+            sumoBinary = checkBinary('sumo')
+        else:
+            sumoBinary = checkBinary('sumo-gui')
 
-    # first, generate the route file for this simulation
-    generate_routefile()
+        # first, generate the route file for this simulation
+        generate_routefile()
 
-    # this is the normal way of using traci. sumo is started as a
-    # subprocess and then the python script connects and runs
-    traci.start([sumoBinary, "-c", "config/cross.sumocfg",#])
-                "--tripinfo-output", "tripinfo.xml",
-                "--queue-output", "queueinfo.xml",])
-    run()
+        # this is the normal way of using traci. sumo is started as a
+        # subprocess and then the python script connects and runs
+        # 파일 덮어쓰기로 되어있음
+        traci.start([sumoBinary, "-c", "config/cross.sumocfg",
+                    "--tripinfo-output", "tripinfo.xml",
+                    "--queue-output", "queueinfo.xml",])
+                    # "--tripinfo-output", f"tripinfo_{i}.xml",
+                    # "--queue-output", f"queueinfo_{i}.xml",])
+        run()
