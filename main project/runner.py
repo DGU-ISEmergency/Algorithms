@@ -195,6 +195,7 @@ detect_range = 80 # 긴급차량 감지 범위
 
 # main
 def run_new():
+    import pandas as pd
     """execute the TraCI control loop"""
     step = 0
     temp_step = 99999
@@ -214,6 +215,11 @@ def run_new():
                 
                 if eme_info:
                     temp_step = step + duration
+                    temp_step_df = pd.read_csv('temp_step.csv')
+                    # temp_step.csv 파일의 step 열에 temp_step 추가 후 저장
+                    temp_step_df = temp_step_df._append({'step': temp_step}, ignore_index=True)
+                    temp_step_df.to_csv('temp_step.csv', index=False)
+
                     break  # 긴급차량 감지 시 반복 중단
         
         veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
@@ -235,6 +241,7 @@ def run_new():
     data_rangling()
 
 def run_old():
+    import pandas as pd
     """execute the TraCI control loop"""
     step = 0
     temp_step = 99999
@@ -281,6 +288,13 @@ def make_csv():
     my_data = pd.DataFrame(columns=['step', 'lane_id', 'queueing_length', 'queueing_time'])
     my_data.to_csv('my_data.csv', index=False)
 
+def make_csv2():
+    # temp_step.csv 파일 생성
+    import pandas as pd
+
+    temp_step = pd.DataFrame(columns=['step'])
+    temp_step.to_csv('temp_step.csv', index=False)
+
 def data_rangling():
     import xml.etree.ElementTree as ET
     import pandas as pd
@@ -318,12 +332,13 @@ def data_rangling():
 if __name__ == "__main__":
     options = get_options()
     make_csv()
+    make_csv2()
     # 전이신호 사용여부 (True: 사용, False: 미사용)
     sig_change = True
 
     if sig_change == True:
         # 시뮬레이션 100회 반복
-        for i in range(10):
+        for i in range(100):
             # this script has been called from the command line. It will start sumo as a
             # server, then connect and run
             # if options.nogui:
