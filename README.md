@@ -13,7 +13,7 @@
 **교통 혼잡 최소화를 위한 긴급차량 우선신호 시스템 상의 신호 회복주기 최적화 : 강남 테헤란로를 중심으로**
 
 ## 사용 언어
-- Python
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> 
 
 ## 사용 기술
 - **Simulation**
@@ -73,8 +73,5 @@
 - 기존 신호체계와 자체 신호체계 적용 환경에서 위 시뮬레이션을 각각 100번 반복
 - 데이터 추출
 - 데이터 분석 (`result.ipynb`)
-
-## 분석 결과
-![분석 결과 이미지](result.png)  <!-- 분석 결과 이미지를 여기에 첨부 -->
 
 
