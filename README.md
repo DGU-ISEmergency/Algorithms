@@ -1,4 +1,4 @@
-# 2024-1 동국대 산업시스템공학종합설계 10조 SUMO Simulation Repository
+# 2024-1 동국대 산업시스템공학종합설계 10조
 
 ## Team Members
 | 이름 | 학번 |
