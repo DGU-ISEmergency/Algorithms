@@ -26,6 +26,17 @@
   - Matplotlib
   - NumPy
 
+## How to Optimize
+
+1. **데이터 입력**
+   - 최적화하고자 하는 교차로의 데이터 입력
+      - 포화 교통류율
+      - 도착 교통량
+3. **최적화 실행**
+   '''bash
+   pso_algorithm.ipynb
+   '''
+   
 ## How to Simulate
 
 1. **시뮬레이션 파일이 있는 폴더 이동**
