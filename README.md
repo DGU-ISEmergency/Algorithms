@@ -33,9 +33,10 @@
       - 포화 교통류율
       - 도착 교통량
 3. **최적화 실행**
-   '''bash
-   pso_algorithm.ipynb
-   '''
+    ```bash
+    pso_algorithm.ipynb
+    ```
+
    
 ## How to Simulate
 
