@@ -361,7 +361,7 @@ if __name__ == "__main__":
     
     else:
         # 시뮬레이션 100회 반복
-        for i in range(10):
+        for i in range(100):
             # if options.nogui:
             sumoBinary = checkBinary('sumo')
             # else:
