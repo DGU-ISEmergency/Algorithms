@@ -151,20 +151,20 @@
     </edge>
 
     <tlLogic id="c" type="static" programID="0" offset="0">
-        <phase duration="58" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
+        <phase duration="57" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
         <phase duration="3"  state="OrrrryOyyyyrOrrryOyyyyr"/>
-        <phase duration="37" state="OrrrrrOrrrrGOrrrrOrrrrG"/>
+        <phase duration="36" state="OrrrrrOrrrrGOrrrrOrrrrG"/>
         <phase duration="4"  state="OrrrrrOrrrryOrrrrOrrrry"/>
-        <phase duration="58" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
+        <phase duration="57" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
         <phase duration="3"  state="OyyyyrOrrrrrOyyyrOrrrrr"/>
     </tlLogic>
     <tlLogic id="c" type="static" programID="1" offset="0">
-        <phase duration="55" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
-        <phase duration="3"  state="OrrrryOyyyyrOrrryOyyyyr"/>
+        <phase duration="56.3" state="OrrrrGOGGGGrOrrrGOGGGGr"/>
+        <phase duration="2.0"  state="OrrrryOyyyyrOrrryOyyyyr"/>
         <phase duration="36.5" state="OrrrrrOrrrrGOrrrrOrrrrG"/>
-        <phase duration="3"  state="OrrrrrOrrrryOrrrrOrrrry"/>
-        <phase duration="55" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
-        <phase duration="5"  state="OyyyyrOrrrrrOyyyrOrrrrr"/>
+        <phase duration="2"  state="OrrrrrOrrrryOrrrrOrrrry"/>
+        <phase duration="56" state="OGGGGrOrrrrrOGGGrOrrrrr"/>
+        <phase duration="2"  state="OyyyyrOrrrrrOyyyrOrrrrr"/>
     </tlLogic>
 
     <junction id="1" type="priority" x="0.00" y="500.00" incLanes="c1_0 c1_1 c1_2" intLanes=":1_0_0" shape="0.00,500.00 9.60,500.00 0.00,500.00">

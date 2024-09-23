@@ -56,8 +56,8 @@ def generate_routefile(i):
         print("""<routes>
         <vType id="passenger" accel="5" decel="10" sigma="0.5" length="5" minGap="2" departSpeed="16.67" maxSpeed="16.67" guiShape="passenger" color="grey"/>
         <vType id="emergency" vClass="emergency" accel="5" decel="10" sigma="0.5" length="7" minGap="2" departSpeed="16.67" maxSpeed="35" color="red"/>
-        <vType id="bus" accel="5" decel="10" sigma="0.5" length="12" minGap="2" departSpeed="12" maxSpeed="16.67" guiShape="bus" color="0,0,255"/>
-        <vType id="truck" accel="5" decel="10" sigma="0.5" length="10" minGap="2" departSpeed="12" maxSpeed="16.67" guiShape="truck" color="0,255,0"/>
+        <vType id="bus" accel="5" decel="10" sigma="0.5" length="12" minGap="2" departSpeed="12" maxSpeed="12" guiShape="bus" color="0,0,255"/>
+        <vType id="truck" accel="5" decel="10" sigma="0.5" length="10" minGap="2" departSpeed="10" maxSpeed="10" guiShape="truck" color="0,255,0"/>
         
         <route id="right" edges="3c c4" />
         <route id="left" edges="4c c3" />
@@ -208,15 +208,13 @@ def run_new():
         loop = ["0", "1", "2", "3", "4"]
         edge_id = "4c"
         eme_info = None
-
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
-                eme_info, duration, phase = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
+                eme_info, duration = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
                 
                 if eme_info:
                     temp_step = step + duration
-
                     temp_step_df = pd.read_csv('temp_step.csv')
                     # temp_step.csv 파일의 step 열에 temp_step 추가 후 저장
                     temp_step_df = temp_step_df._append({'step': temp_step}, ignore_index=True)
@@ -227,14 +225,16 @@ def run_new():
         veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
 
         if eme_info:
-            cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
+            cl.change(veh_list, eme_info, lcmode, lctime, detect_range) 
             cl.change_small_lane(eme_info, lctime)
     
         if temp_step < step:
             traci.trafficlight.setProgram("c", 1)
+        
 
         step += 1
         
+
     
     traci.close()
     sys.stdout.flush()
@@ -245,7 +245,6 @@ def run_old():
     """execute the TraCI control loop"""
     step = 0
     temp_step = 99999
-    return_step = 99999
     traci.trafficlight.setProgram("c", 0)
     processed_emergency_vehicles = set() # 처리된 긴급차량
 
@@ -259,14 +258,8 @@ def run_old():
         for loop_id in loop:
             lane_id = f"{edge_id}_{loop_id}"
             if ed.get_detected_vehicle_ids(loop_id):
-                eme_info, duration, phase = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
-
+                eme_info, duration = es.signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles)
                 if eme_info:
-                    return_step = step + duration
-
-                    # 루프마다 currPhase가 바뀌어서 긴급차량 감지 시 phase를 currPhase로 저장
-                    currPhase = phase
-
                     break  # 긴급차량 감지 시 반복 중단
         
         veh_list = traci.edge.getLastStepVehicleIDs(edge_id)
@@ -274,12 +267,7 @@ def run_old():
         if eme_info:
             cl.change(veh_list, eme_info, lcmode, lctime, detect_range)
             cl.change_small_lane(eme_info, lctime)
-
-        if return_step < step:
-            traci.trafficlight.setPhase("c", currPhase)
-
-            return_step = 99999
-
+    
         step += 1
     
     traci.close()
@@ -373,7 +361,7 @@ if __name__ == "__main__":
     
     else:
         # 시뮬레이션 100회 반복
-        for i in range(100):
+        for i in range(10):
             # if options.nogui:
             sumoBinary = checkBinary('sumo')
             # else:

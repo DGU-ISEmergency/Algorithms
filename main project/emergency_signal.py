@@ -31,12 +31,9 @@ def signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles):
 
     # 긴급차량인지 확인
     if "emergency" in veh_id:
-        # 현재 페이즈 확인
-        currPhase = tr.trafficlight.getPhase(tls_id)
-
         # 이미 처리된 긴급차량인지 확인
         if veh_id in processed_emergency_vehicles:
-            return None, 0, currPhase
+            return None, 0
 
         # 처리된 긴급차량으로 추가
         processed_emergency_vehicles.add(veh_id)
@@ -46,10 +43,10 @@ def signal_change(edge_id, lane_id, loop_id, processed_emergency_vehicles):
 
         # 요구 녹색시간 계산
         duration = gt.green_time(lane_id, veh_id, edge_id)
-
+        
         # 신호 변경
         set_emergency_signal(tls_id, duration)
         
-        return eme_info, duration, currPhase
+        return eme_info, duration
     
-    return None, 0, tr.trafficlight.getPhase(tls_id)
+    return None, 0
